@@ -1,3 +1,4 @@
-pub mod errors;
-pub mod vector;
 pub mod distance;
+pub mod errors;
+pub mod hnsw;
+pub mod vector;
