@@ -104,9 +104,8 @@ impl Hnsw {
 
     /// Insert a vector into the index.
     pub fn insert(&mut self, id: u64, vector: Vector) {
-        if self.vectors.contains_key(&id) {
-            // Overwrite: just replace the vector.
-            self.vectors.insert(id, vector);
+        if let std::collections::hash_map::Entry::Occupied(mut e) = self.vectors.entry(id) {
+            e.insert(vector);
             return;
         }
 
@@ -154,7 +153,7 @@ impl Hnsw {
 
             // Add reverse edges + prune
             for &n in &neighbors {
-                let entry = self.layers[layer].entry(n).or_insert_with(Vec::new);
+                let entry = self.layers[layer].entry(n).or_default();
                 entry.push(id);
                 if entry.len() > max_m {
                     // Keep max_m nearest to n
@@ -185,7 +184,7 @@ impl Hnsw {
                 self.layers.push(HashMap::new());
             }
             for l in 0..=level {
-                self.layers[l].entry(id).or_insert_with(Vec::new);
+                self.layers[l].entry(id).or_default();
             }
         }
     }
