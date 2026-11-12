@@ -1,12 +1,9 @@
-# Vectorlite War Log
+## Day 1 - [today's date]
 
-## Day 0 - (fill in today's date)
-- Installed Rust, Python, Git, gh, Docker Desktop, MSVC Build Tools
-- Created repo: github.com/YOURNAME/vectorlite
-- Reserved PyPI name: (vectorlite / alternate: ___)
-- Bootstrapped Rust project
-- CI green
-- Next: implement HNSW insertion + search
+- Wrote full HNSW implementation (~350 lines of Rust)
+- 4 unit tests pass, recall@10 = 1.000 on 1,000 vectors × 20 queries
+- Fought through: linker, dbghelp, encoding, 5 clippy lints
+- CI green ✅
+- Next: WAL with CRC for crash-safe writes
 
-## Time spent: 60 min
-## Mood:
+## Time spent: ~2.5 hours (setup + code + debugging)
