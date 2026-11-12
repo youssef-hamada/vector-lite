@@ -119,8 +119,8 @@ impl Hnsw {
             while self.layers.len() <= level {
                 self.layers.push(HashMap::new());
             }
-            for l in 0..=level {
-                self.layers[l].insert(id, Vec::new());
+            for layer_map in self.layers.iter_mut().take(level + 1) {
+                layer_map.insert(id, Vec::new());
             }
             return;
         }
@@ -180,8 +180,8 @@ impl Hnsw {
             while self.layers.len() <= level {
                 self.layers.push(HashMap::new());
             }
-            for l in 0..=level {
-                self.layers[l].entry(id).or_default();
+            for layer_map in self.layers.iter_mut().take(level + 1) {
+                layer_map.entry(id).or_default();
             }
         }
     }
