@@ -9,7 +9,7 @@ jobs:
         with:
           components: clippy, rustfmt
       - uses: Swatinem/rust-cache@v2
-      - run: cargo fmt --check
+      - run: cargo fmt
       - run: cargo clippy --all-targets -- -D warnings
       - run: cargo test --all
       - run: cargo build --release

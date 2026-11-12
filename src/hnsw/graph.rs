@@ -137,17 +137,14 @@ impl Hnsw {
         // From min(level, max_layer) down to 0: connect
         let mut layer = level.min(self.max_layer);
         loop {
-            let candidates = self.search_layer(&vector, current, self.config.ef_construction, layer);
+            let candidates =
+                self.search_layer(&vector, current, self.config.ef_construction, layer);
             let max_m = if layer == 0 {
                 self.config.m0
             } else {
                 self.config.m
             };
-            let neighbors: Vec<u64> = candidates
-                .iter()
-                .take(max_m)
-                .map(|(_, id)| *id)
-                .collect();
+            let neighbors: Vec<u64> = candidates.iter().take(max_m).map(|(_, id)| *id).collect();
 
             self.layers[layer].insert(id, neighbors.clone());
 
@@ -280,7 +277,7 @@ impl Hnsw {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::{Rng, SeedableRng}; 
+    use rand::{Rng, SeedableRng};
 
     fn random_vectors(n: usize, dim: usize, seed: u64) -> Vec<(u64, Vector)> {
         let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
@@ -324,10 +321,8 @@ mod tests {
         let mut hits = 0;
         for (_, q) in &queries {
             // Exact ground truth
-            let mut exact: Vec<(f32, u64)> = data
-                .iter()
-                .map(|(id, v)| (l2_squared(q, v), *id))
-                .collect();
+            let mut exact: Vec<(f32, u64)> =
+                data.iter().map(|(id, v)| (l2_squared(q, v), *id)).collect();
             exact.sort_by(|a, b| a.0.partial_cmp(&b.0).unwrap());
             let truth: HashSet<u64> = exact.iter().take(10).map(|(_, id)| *id).collect();
 
@@ -337,9 +332,6 @@ mod tests {
         }
         let recall = hits as f32 / (20 * 10) as f32;
         println!("recall@10 = {recall:.3}");
-        assert!(
-            recall >= 0.90,
-            "recall too low: {recall:.3} (need >= 0.90)"
-        );
+        assert!(recall >= 0.90, "recall too low: {recall:.3} (need >= 0.90)");
     }
 }
